@@ -4,5 +4,8 @@
   "main": "index.js",
   "repository": "https://github.com/FilipeCamera/node-react-test.git",
   "author": "Filipe <filipecameracastro@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^4.7.4"
+  }
 }
