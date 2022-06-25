@@ -7,5 +7,10 @@
   "license": "MIT",
   "devDependencies": {
     "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "pg": "^8.7.3",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.3.6"
   }
 }
