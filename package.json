@@ -1,0 +1,8 @@
+{
+  "name": "node-react-test",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/FilipeCamera/node-react-test.git",
+  "author": "Filipe <filipecameracastro@gmail.com>",
+  "license": "MIT"
+}
