@@ -12,6 +12,9 @@ const database = new DataSource({
   synchronize: true,
 });
 
-await database.initialize();
+database
+  .initialize()
+  .then(() => {})
+  .catch((err) => console.error(err));
 
 export default database;
