@@ -1,5 +1,5 @@
 import { DataSource } from "typeorm";
-import { User } from "./Entity";
+import { User } from "./entities";
 
 const database = new DataSource({
   type: process.env.DB_TYPE,
