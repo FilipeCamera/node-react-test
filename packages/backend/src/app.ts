@@ -1,5 +1,13 @@
 import express, { Application } from "express";
 import "reflect-metadata";
+import database from "./database/connection";
+
+database
+  .initialize()
+  .then(() => {
+    console.log("database is running!");
+  })
+  .catch((err) => console.error(err));
 
 class App {
   private readonly app: Application;
