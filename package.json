@@ -6,10 +6,12 @@
   "author": "Filipe <filipecameracastro@gmail.com>",
   "license": "MIT",
   "devDependencies": {
+    "@types/express": "^4.17.13",
     "@types/node": "^18.0.0",
     "typescript": "^4.7.4"
   },
   "dependencies": {
+    "express": "^4.18.1",
     "pg": "^8.7.3",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.3.6"
