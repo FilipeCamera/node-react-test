@@ -1,4 +1,5 @@
 import { DataSource } from "typeorm";
+import { User } from "./Entity";
 
 const database = new DataSource({
   type: process.env.DB_TYPE,
@@ -6,7 +7,7 @@ const database = new DataSource({
   port: process.env.DB_PORT,
   username: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
-  entities: [],
+  entities: [User],
   logging: false,
   synchronize: true,
 });
