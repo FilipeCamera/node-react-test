@@ -1,5 +1,16 @@
-import express from "express";
+import express, { Application } from "express";
 
-const app = express();
+class App {
+  private readonly app: Application;
+  constructor() {
+    this.app = express();
+  }
 
-export default app;
+  listen(port: number): void {
+    this.app.listen(port, () =>
+      console.log(`Aplicacao rodando na porta ${port}`)
+    );
+  }
+}
+
+export default new App();
