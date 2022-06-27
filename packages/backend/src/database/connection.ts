@@ -1,17 +1,18 @@
-import { DataSource } from "typeorm";
-import { User } from "./entities";
+import knex from "knex";
 import "dotenv/config";
 
-const database = new DataSource({
-  type: "postgres",
-  database: process.env.DB_NAME,
-  port: 5432,
-  username: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  entities: [User],
-  logging: false,
-  synchronize: true,
-  migrations: ["/packages/backend/src/database/migrations/*.ts"],
+const database = knex({
+  client: "pg",
+  connection: {
+    host: process.env.DB_HOST,
+    port: 5432,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+  },
+  migrations: {
+    tableName: "migrations",
+  },
 });
 
 export default database;
