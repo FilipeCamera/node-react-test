@@ -1,5 +1,4 @@
 import express, { Application } from "express";
-import database from "./database/connection";
 
 class App {
   private readonly app: Application;
