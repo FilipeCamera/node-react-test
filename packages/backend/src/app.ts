@@ -7,7 +7,9 @@ class App {
     this.middlewares();
   }
 
-  private middlewares() {}
+  private middlewares() {
+    this.app.use(express.json());
+  }
   listen(port: number): void {
     this.app.listen(port, () =>
       console.log(`Aplicacao rodando na porta ${port}`)
