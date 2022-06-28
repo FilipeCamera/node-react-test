@@ -7,6 +7,14 @@ export async function up(knex: Knex): Promise<void> {
     table.string("author").notNullable();
     table.string("isbn").notNullable().unique();
     table.string("copy_code").notNullable();
+    table
+      .timestamp("created_at", { precision: 6 })
+      .defaultTo(knex.raw("CURRENT_TIMESTAMP"))
+      .notNullable();
+    table
+      .timestamp("created_at", { precision: 6 })
+      .defaultTo(knex.raw("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
+      .notNullable();
   });
 }
 

@@ -10,6 +10,14 @@ export async function up(knex: Knex): Promise<void> {
     table.string("address").notNullable();
     table.string("city").notNullable();
     table.string("uf", 2).notNullable();
+    table
+      .timestamp("created_at", { precision: 6 })
+      .defaultTo(knex.raw("CURRENT_TIMESTAMP"))
+      .notNullable();
+    table
+      .timestamp("created_at", { precision: 6 })
+      .defaultTo(knex.raw("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
+      .notNullable();
   });
 }
 
