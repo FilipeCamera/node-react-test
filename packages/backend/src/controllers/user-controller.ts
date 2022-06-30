@@ -12,7 +12,7 @@ export class UserController {
         database.select("cpf").from("users").whereRaw(`users.cpf = '${cpf}'`)
       );
       console.log(existUser);
-      if (existUser) throw new AppError("Este usuário já existe!", 404);
+      if (existUser) throw new AppError("Este usuário já existe!", 500);
 
       const [user] = await database("users")
         .insert({
@@ -34,7 +34,31 @@ export class UserController {
       return res.status(e.code).json(e.message);
     }
   }
-  async read(req: Request, res: Response) {}
+  async read(req: Request, res: Response) {
+    try {
+      const { userId } = req.params;
+
+      if (userId) {
+        const [user] = await database
+          .from("users")
+          .select("*")
+          .where({ id: userId });
+
+        if (!user) throw new AppError("Usuario nao encontrado", 404);
+
+        return res.status(200).json(user);
+      }
+
+      const users = await database.from("users").select("*").returning("*");
+
+      if (users.length === 0)
+        throw new AppError("Nenhum usuario encontrado", 404);
+
+      return res.status(200).json(users);
+    } catch (e: any) {
+      return res.status(e.code).json(e.message);
+    }
+  }
   async update(req: Request, res: Response) {}
   async delete(req: Request, res: Response) {}
 }
