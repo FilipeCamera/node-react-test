@@ -38,6 +38,12 @@ export class UserController {
     try {
       const { userId } = req.params;
 
+      const id = req.userId;
+
+      const [auth] = await database.from("users").select("*").where({ id });
+
+      if (!auth) throw new AppError("Usuário precisa está autenticado!", 401);
+
       if (userId) {
         const [user] = await database
           .from("users")
