@@ -30,6 +30,6 @@ export const authentication = async (
 
     return next();
   } catch (err: any) {
-    throw new AppError(err.message, 500);
+    return res.status(err.code).json(err.message);
   }
 };
