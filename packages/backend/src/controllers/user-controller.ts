@@ -65,6 +65,48 @@ export class UserController {
       return res.status(e.code).json(e.message);
     }
   }
-  async update(req: Request, res: Response) {}
+  async update(req: Request, res: Response) {
+    try {
+      const { userId } = req.params;
+      const { fullname, birthdate, cep, address, city, uf } = req.body;
+
+      const id = req.userId;
+
+      const [auth] = await database.from("users").select("*").where({ id });
+
+      if (!auth) throw new AppError("Usuário precisa está autenticado!", 401);
+
+      const [user] = await database
+        .from("users")
+        .select("*")
+        .where({ id: userId });
+
+      if (auth.id !== user.id)
+        throw new AppError(
+          "Usuário não tem permissão para alterar os dados",
+          401
+        );
+
+      const [updateUser] = await database("users")
+        .where({ id: userId })
+        .update({
+          fullname,
+          birthdate,
+          cep,
+          address,
+          city,
+          uf,
+          updated_at: "now",
+        })
+        .returning("*");
+
+      if (!updateUser)
+        throw new AppError("Não foi possível fazer as alterações!", 500);
+
+      return res.status(200).json(updateUser);
+    } catch (e: any) {
+      return res.status(e.code || 500).json(e.message);
+    }
+  }
   async delete(req: Request, res: Response) {}
 }

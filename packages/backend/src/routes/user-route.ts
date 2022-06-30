@@ -8,5 +8,6 @@ const UserRouter = Router();
 UserRouter.post("/create", userController.create);
 UserRouter.get("/users", authentication, userController.read);
 UserRouter.get("/users/:userId", authentication, userController.read);
+UserRouter.post("/update/:userId", authentication, userController.update);
 
 export default UserRouter;
