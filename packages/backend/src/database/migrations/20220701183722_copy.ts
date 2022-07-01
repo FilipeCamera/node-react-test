@@ -20,6 +20,8 @@ export async function up(knex: Knex): Promise<void> {
     table.date("start_rent").notNullable();
     table.date("return_day").notNullable();
     table.boolean("devolution").nullable();
+    table.timestamp("created_at", { precision: 6 }).defaultTo(knex.fn.now(6));
+    table.timestamp("updated_at", { precision: 6 }).defaultTo(knex.fn.now(6));
   });
 }
 

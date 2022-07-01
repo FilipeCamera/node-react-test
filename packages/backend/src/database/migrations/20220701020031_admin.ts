@@ -10,6 +10,8 @@ export async function up(knex: Knex): Promise<void> {
       .unique()
       .notNullable()
       .defaultTo("admin_biblioteca_123");
+    table.timestamp("created_at", { precision: 6 }).defaultTo(knex.fn.now(6));
+    table.timestamp("updated_at", { precision: 6 }).defaultTo(knex.fn.now(6));
   });
 }
 
