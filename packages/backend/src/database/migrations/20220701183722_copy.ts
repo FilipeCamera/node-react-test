@@ -17,6 +17,9 @@ export async function up(knex: Knex): Promise<void> {
       .notNullable()
       .onDelete("CASCADE")
       .onUpdate("CASCADE");
+    table.date("start_rent").notNullable();
+    table.date("return_day").notNullable();
+    table.boolean("devolution").nullable();
   });
 }
 
