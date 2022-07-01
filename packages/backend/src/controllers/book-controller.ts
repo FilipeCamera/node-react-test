@@ -10,7 +10,7 @@ export class BookController {
 
       const id = req.userId;
 
-      const [root] = await database("users").select("*").where({ id });
+      const [root] = await database("admins").select("*").where({ id });
 
       if (!root) throw new AppError("Usuário não tem permissão", 401);
 
