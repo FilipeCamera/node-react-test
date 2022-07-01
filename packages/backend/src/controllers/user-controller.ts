@@ -11,8 +11,8 @@ export class UserController {
       const [existUser] = await database("users").whereExists(
         database.select("cpf").from("users").whereRaw(`users.cpf = '${cpf}'`)
       );
-      console.log(existUser);
-      if (existUser) throw new AppError("Este usuário já existe!", 500);
+
+      if (existUser) throw new AppError("Este usuário já existe!", 404);
 
       const [user] = await database("users")
         .insert({
@@ -108,5 +108,22 @@ export class UserController {
       return res.status(e.code || 500).json(e.message);
     }
   }
-  async delete(req: Request, res: Response) {}
+  async delete(req: Request, res: Response) {
+    try {
+      const id = req.userId;
+
+      const [auth] = await database.from("users").select("*").where({ id });
+
+      if (!auth) throw new AppError("Usuário precisa está autenticado!", 401);
+
+      const deleted = await database("users").where({ id }).delete();
+
+      if (!deleted)
+        throw new AppError("Não foi possível deletar o usuário", 500);
+
+      return res.status(200).json({ deleted: true });
+    } catch (e: any) {
+      return res.status(e.code).json(e.message);
+    }
+  }
 }
