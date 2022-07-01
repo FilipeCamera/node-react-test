@@ -61,11 +61,10 @@ export class BookController {
       if (!root)
         throw new AppError("Usuário não tem permissão para editar", 401);
 
-      const book = await database("books")
+      const [book] = await database("books")
         .where({ id: book_id })
         .update({ title, author, isbn, copy_code })
-        .returning("*")
-        .first();
+        .returning("*");
 
       if (!book) throw new AppError("Não foi possível modificar o livro", 500);
 
@@ -88,7 +87,7 @@ export class BookController {
           401
         );
 
-      const deleted = await database("books").where({ id }).delete();
+      const deleted = await database("books").where({ id: book_id }).delete();
 
       if (!deleted) throw new AppError("Não foi possível deletar o livro", 500);
 
