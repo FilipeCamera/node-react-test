@@ -22,7 +22,7 @@ export class BookController {
 
       return res.status(201).json(book);
     } catch (e: any) {
-      return res.status(e.statuscode | 500).json(e.message);
+      return res.status(e.statuscode || 500).json(e.message);
     }
   }
   async read(req: Request, res: Response) {
@@ -44,7 +44,7 @@ export class BookController {
 
       return res.status(200).json(books);
     } catch (e: any) {
-      return res.status(e.statuscode | 500).json(e.message);
+      return res.status(e.statuscode || 500).json(e.message);
     }
   }
   async update(req: Request, res: Response) {
@@ -67,7 +67,7 @@ export class BookController {
 
       return res.status(200).json(book);
     } catch (e: any) {
-      return res.status(e.statuscode | 500).json(e.message);
+      return res.status(e.statuscode || 500).json(e.message);
     }
   }
   async delete(req: Request, res: Response) {
@@ -90,7 +90,7 @@ export class BookController {
 
       return res.status(200).json({ deleted: true });
     } catch (e: any) {
-      return res.status(e.statuscode | 500).json(e.message);
+      return res.status(e.statuscode || 500).json(e.message);
     }
   }
 }
