@@ -31,7 +31,7 @@ export class UserController {
 
       return res.status(201).json(user);
     } catch (e: any) {
-      return res.status(e.code).json(e.message);
+      return res.status(e.code | 500).json(e.message);
     }
   }
   async read(req: Request, res: Response) {
@@ -62,7 +62,7 @@ export class UserController {
 
       return res.status(200).json(users);
     } catch (e: any) {
-      return res.status(e.code).json(e.message);
+      return res.status(e.code | 500).json(e.message);
     }
   }
   async update(req: Request, res: Response) {
@@ -105,7 +105,7 @@ export class UserController {
 
       return res.status(200).json(updateUser);
     } catch (e: any) {
-      return res.status(e.code || 500).json(e.message);
+      return res.status(e.code | 500).json(e.message);
     }
   }
   async delete(req: Request, res: Response) {
@@ -123,7 +123,7 @@ export class UserController {
 
       return res.status(200).json({ deleted: true });
     } catch (e: any) {
-      return res.status(e.code).json(e.message);
+      return res.status(e.code | 500).json(e.message);
     }
   }
 }

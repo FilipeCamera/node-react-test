@@ -37,7 +37,7 @@ export class AuthController {
 
       return res.status(200).json({ token: token });
     } catch (e: any) {
-      return res.status(e.code).json(e.message);
+      return res.status(e.code | 500).json(e.message);
     }
   }
 }
