@@ -9,6 +9,7 @@
     "packages": ["packages/*"]
   },
   "scripts": {
-    "backend": "yarn workspace backend"
+    "backend": "yarn workspace backend",
+    "frontend": "yarn workspace frontend"
   }
 }
