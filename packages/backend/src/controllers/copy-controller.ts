@@ -46,10 +46,50 @@ export class CopyController {
 
       return res.status(201).json(copy);
     } catch (e: any) {
-      return res.status(e.code | 500).json(e.message);
+      return res.status(e.statuscode | 500).json(e.message);
     }
   }
-  async read(req: Request, res: Response) {}
+  async read(req: Request, res: Response) {
+    try {
+      const id = req.userId;
+
+      let copies;
+      const root = await database("admins").select("*").where({ id }).first();
+      const user = await database("users").select("*").where({ id }).first();
+
+      if (!user && !root) throw new AppError("Usuario nao tem permissão", 401);
+
+      if (user) {
+        copies = await database("copies")
+          .select(
+            "copies.id",
+            "start_rent",
+            "return_day",
+            "devolution",
+            "books.title",
+            "books.copy_code",
+            "books.isbn",
+            "books.author"
+          )
+          .where({ user_id: user.id })
+          .leftJoin("books", "copies.book_id", "books.id")
+          .returning("*");
+      }
+      if (root) {
+        copies = await database("copies")
+          .select("*")
+          .leftJoin("users", "copies.user_id", "users.id")
+          .leftJoin("books", "copies.book_id", "books.id")
+          .returning("*");
+      }
+
+      if (!copies) throw new AppError("Nenhuma copia foi encontrada", 404);
+
+      return res.status(200).json(copies);
+    } catch (e: any) {
+      return res.status(e.statuscode | 500).json(e.message);
+    }
+  }
   async update(req: Request, res: Response) {}
   async delete(req: Request, res: Response) {}
 }
