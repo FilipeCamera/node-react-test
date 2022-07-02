@@ -7,11 +7,11 @@ export class CopyController {
   async create(req: Request, res: Response) {
     try {
       const { copy_code } = req.body;
-      const id = req.params;
+      const id = req.userId;
 
       const start = new Date();
 
-      const end = start.setDate(7);
+      const end = new Date(new Date().setDate(start.getDate() + 7));
 
       const user = await database("users").select("*").where({ id }).first();
 
@@ -22,6 +22,8 @@ export class CopyController {
         .where({ copy_code })
         .first();
 
+      if (!book) throw new AppError("Livro não encontrado", 404);
+
       const verifyCopy = await database("copies")
         .where({ user_id: id, book_id: book.id })
         .select("*")
@@ -29,7 +31,6 @@ export class CopyController {
 
       if (verifyCopy)
         throw new AppError("Usuário já tem uma cópia desse livro", 500);
-      if (!book) throw new AppError("Livro não encontrado", 404);
 
       const [copy] = await database("copies")
         .insert({
@@ -45,7 +46,7 @@ export class CopyController {
 
       return res.status(201).json(copy);
     } catch (e: any) {
-      return res.status(e.code).json(e.message);
+      return res.status(e.code | 500).json(e.message);
     }
   }
   async read(req: Request, res: Response) {}
