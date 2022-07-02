@@ -25,7 +25,8 @@ export class CopyController {
       if (!book) throw new AppError("Livro não encontrado", 404);
 
       const verifyCopy = await database("copies")
-        .where({ user_id: id, book_id: book.id })
+        .where({ user_id: id, book_id: book.id, devolution: null })
+        .orWhere({ user_id: id, book_id: book.id, devolution: false })
         .select("*")
         .first();
 
@@ -46,7 +47,7 @@ export class CopyController {
 
       return res.status(201).json(copy);
     } catch (e: any) {
-      return res.status(e.statuscode | 500).json(e.message);
+      return res.status(e.statuscode || 500).json(e.message);
     }
   }
   async read(req: Request, res: Response) {
@@ -87,9 +88,68 @@ export class CopyController {
 
       return res.status(200).json(copies);
     } catch (e: any) {
-      return res.status(e.statuscode | 500).json(e.message);
+      return res.status(e.statuscode || 500).json(e.message);
     }
   }
-  async update(req: Request, res: Response) {}
-  async delete(req: Request, res: Response) {}
+  async update(req: Request, res: Response) {
+    try {
+      const { copy_id } = req.params;
+      const { devolution } = req.body;
+      const id = req.userId;
+
+      let copy;
+      const root = await database("admins").select("*").where({ id }).first();
+      const user = await database("users").select("*").where({ id }).first();
+
+      if (!user && !root) throw new AppError("Usuario nao tem permissão", 401);
+
+      if (user) {
+        [copy] = await database("copies")
+          .where({ id: copy_id, user_id: user.id })
+          .update({ devolution: devolution })
+          .returning("*");
+      }
+      if (root) {
+        [copy] = await database("copies")
+          .where({ id: copy_id })
+          .update({ devolution: devolution })
+          .returning("*");
+      }
+
+      if (!copy) throw new AppError("Nao foi possivel fazer a alteracao", 500);
+
+      return res.status(200).json(copy);
+    } catch (e: any) {
+      return res.status(e.statuscode || 500).json(e.message);
+    }
+  }
+  async delete(req: Request, res: Response) {
+    try {
+      const { copy_id } = req.params;
+
+      const id = req.userId;
+
+      let result;
+
+      const root = await database("admins").select("*").where({ id }).first();
+      const user = await database("users").select("*").where({ id }).first();
+
+      if (!user && !root) throw new AppError("Usuario nao tem permissão", 401);
+
+      if (user) {
+        result = await database("copies")
+          .where({ id: copy_id, user_id: user.id })
+          .delete();
+      } else {
+        result = await database("copies").where({ id: copy_id }).delete();
+      }
+
+      if (result === 0)
+        throw new AppError("Nao foi possivel excluir a copia", 500);
+
+      return res.status(200).json({ deleted: true });
+    } catch (e: any) {
+      return res.status(e.statuscode || 500).json(e.message);
+    }
+  }
 }
