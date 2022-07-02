@@ -6,5 +6,6 @@ const copyController = new CopyController();
 const CopyRouter = Router();
 
 CopyRouter.post("/create", authentication, copyController.create);
+CopyRouter.get("/list", authentication, copyController.read);
 
 export default CopyRouter;
