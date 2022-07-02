@@ -22,32 +22,29 @@ export class BookController {
 
       return res.status(201).json(book);
     } catch (e: any) {
-      return res.status(e.code | 500).json(e.message);
+      return res.status(e.statuscode | 500).json(e.message);
     }
   }
   async read(req: Request, res: Response) {
     try {
       const { copy_code } = req.params;
 
+      let books;
       if (copy_code) {
-        const [book] = await database("books")
+        books = await database("books")
           .select("*")
-          .where({ copy_code: copy_code });
-
-        if (!book)
-          throw new AppError("Não foi possível encontrar o livro", 404);
-
-        return res.status(200).json(book);
+          .where({ copy_code: copy_code })
+          .first();
+      } else {
+        books = await database("books").select("*").returning("*");
       }
 
-      const books = await database("books").select("*").returning("*");
-
-      if (books.length === 0)
+      if (!books || books.length === 0)
         throw new AppError("Nenhum livro encontrado!", 404);
 
       return res.status(200).json(books);
     } catch (e: any) {
-      return res.status(e.code | 500).json(e.message);
+      return res.status(e.statuscode | 500).json(e.message);
     }
   }
   async update(req: Request, res: Response) {
@@ -70,7 +67,7 @@ export class BookController {
 
       return res.status(200).json(book);
     } catch (e: any) {
-      return res.status(e.code | 500).json(e.message);
+      return res.status(e.statuscode | 500).json(e.message);
     }
   }
   async delete(req: Request, res: Response) {
@@ -93,7 +90,7 @@ export class BookController {
 
       return res.status(200).json({ deleted: true });
     } catch (e: any) {
-      return res.status(e.code | 500).json(e.message);
+      return res.status(e.statuscode | 500).json(e.message);
     }
   }
 }
