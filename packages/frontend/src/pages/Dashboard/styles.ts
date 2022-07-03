@@ -5,6 +5,11 @@ export const Container = styled.div`
   display: grid;
   grid-template-areas: "menu box box";
   grid-template-columns: 1fr 2fr 2fr;
+
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 export const MenuSide = styled.div`
@@ -24,6 +29,10 @@ export const Nav = styled.nav`
     font-size: 2.2rem;
     color: #fff;
     margin: 1.2rem 0 2.4rem;
+  }
+
+  @media (max-width: 768px) {
+    height: 100%;
   }
 `;
 
@@ -72,6 +81,16 @@ export const NavSubMenu = styled(Link)`
 
 export const BoxInfo = styled.div`
   grid-area: box;
+  display: flex;
+  flex-direction: column;
+  padding: 1.6rem;
+
+  h4 {
+    font-family: "Open Sans", sans-serif;
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin: 0.5rem 0 1.6rem;
+  }
 `;
 
 export const ButtonLink = styled(Link)``;

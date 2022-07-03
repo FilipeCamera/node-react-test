@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Card } from "../../components";
 import {
   BoxInfo,
   Container,
@@ -30,9 +31,6 @@ export function Dashboard() {
                 Usuários
               </button>
               {stateMenu.users && (
-                <NavSubMenu to="#">Cadastrar usuário</NavSubMenu>
-              )}
-              {stateMenu.users && (
                 <NavSubMenu to="#">Listar usuários</NavSubMenu>
               )}
               {stateMenu.users && (
@@ -49,7 +47,9 @@ export function Dashboard() {
                 Livros
               </button>
               {stateMenu.books && (
-                <NavSubMenu to="#">Cadastrar livro</NavSubMenu>
+                <NavSubMenu to="/admin/livros/cadastrar">
+                  Cadastrar livro
+                </NavSubMenu>
               )}
               {stateMenu.books && <NavSubMenu to="#">Listar livros</NavSubMenu>}
               {stateMenu.books && <NavSubMenu to="#">Editar livro</NavSubMenu>}
@@ -75,7 +75,11 @@ export function Dashboard() {
           </NavWrap>
         </Nav>
       </MenuSide>
-      <BoxInfo></BoxInfo>
+      <BoxInfo>
+        <h4>Livros mais alugados</h4>
+
+        <h4>Livros com mais atrasos</h4>
+      </BoxInfo>
     </Container>
   );
 }
