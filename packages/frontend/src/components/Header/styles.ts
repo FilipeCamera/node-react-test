@@ -21,7 +21,7 @@ export const HeaderContainer = styled.div`
     border: none;
     background: rgba(255, 255, 255, 0.3);
     height: 2.8rem;
-    width: 6.4rem;
+    padding: 0 1.6rem;
     font-family: "Open Sans", sans-serif;
     font-weight: 500;
     color: #fff;
