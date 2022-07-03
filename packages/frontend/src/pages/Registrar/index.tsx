@@ -44,7 +44,7 @@ export function Registrar() {
           onChange={(e) => setCodeAccess(e.target.value)}
           placeholder="Estado"
         />
-        <Button title="Acessar" onClick={() => {}} />
+        <Button title="Registrar" onClick={() => {}} />
         <ButtonLink to="/">Já tem um conta? Efetue o login</ButtonLink>
       </Box>
     </Container>
