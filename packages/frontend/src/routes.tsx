@@ -1,10 +1,9 @@
-import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Login, Dashboard, Home, Registrar } from "./pages";
+import { CreateBook } from "./pages/Books";
 import { PrivateRoute } from "./routes/private-routes";
 
 function Initial() {
-  const [user, setUser] = useState(true);
   return (
     <Router>
       <Routes>
@@ -14,8 +13,16 @@ function Initial() {
         <Route
           path="/admin/dashboard"
           element={
-            <PrivateRoute user={user}>
+            <PrivateRoute>
               <Dashboard />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/admin/livros/cadastrar"
+          element={
+            <PrivateRoute>
+              <CreateBook />
             </PrivateRoute>
           }
         />
