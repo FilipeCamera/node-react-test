@@ -110,13 +110,29 @@ export class UserController {
   }
   async delete(req: Request, res: Response) {
     try {
+      const { userId } = req.params;
       const id = req.userId;
 
-      const [auth] = await database.from("users").select("*").where({ id });
+      let deleted;
+      const root = await database
+        .from("admins")
+        .select("*")
+        .where({ id })
+        .first();
+      const user = await database
+        .from("users")
+        .select("*")
+        .where({ id })
+        .first();
 
-      if (!auth) throw new AppError("Usuário precisa está autenticado!", 401);
+      if (!user && !root)
+        throw new AppError("Usuário precisa está autenticado!", 401);
 
-      const deleted = await database("users").where({ id }).delete();
+      if (root && userId) {
+        deleted = await database("users").where({ id: userId }).delete();
+      } else {
+        deleted = await database("users").where({ id }).delete();
+      }
 
       if (!deleted)
         throw new AppError("Não foi possível deletar o usuário", 500);

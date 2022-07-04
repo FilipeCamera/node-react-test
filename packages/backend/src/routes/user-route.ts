@@ -10,5 +10,6 @@ UserRouter.get("/list", authentication, userController.read);
 UserRouter.get("/list/:userId", authentication, userController.read);
 UserRouter.put("/update/:userId", authentication, userController.update);
 UserRouter.delete("/delete", authentication, userController.delete);
+UserRouter.delete("/delete/:userId", authentication, userController.delete);
 
 export default UserRouter;
